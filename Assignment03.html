@@ -3,51 +3,84 @@
 <head>
 	<title>Search Results</title>
 	<style>
-		table, th, td {
-			border: 1px solid black;
+		table {
 			border-collapse: collapse;
-			padding: 10px;
+			width: 100%;
 		}
+
+		th, td {
+			text-align: left;
+			padding: 8px;
+			border: 1px solid #ddd;
+		}
+
 		th {
-			background-color: #ccc;
+			background-color: #f2f2f2;
 		}
 	</style>
 </head>
 <body>
 	<h1>Search Results</h1>
-	<label for="searchTerm">Enter a search term:</label>
-	<input type="text" id="searchTerm" name="searchTerm">
-	<button onclick="search()">Search</button>
-	<div id="searchResults"></div>
+	<form>
+		<label for="searchTerm">Search:</label>
+		<input type="text" id="searchTerm" name="searchTerm">
+		<button type="submit" onclick="search(event)">Submit</button>
+	</form>
+	<table id="resultsTable">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
 	<script>
-		function search() {
+		var data = [
+			{
+				"title": "Lorem ipsum",
+				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+			},
+			{
+				"title": "Dolor sit amet",
+				"description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium."
+			},
+			{
+				"title": "Consectetur adipiscing elit",
+				"description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."
+			}
+		];
+
+		function search(event) {
+			event.preventDefault();
 			var searchTerm = document.getElementById("searchTerm").value;
-			// Your code to search the database goes here
-			// Replace the following dummy data with your actual search results
-			var searchResults = [
-				["Title 1", "Description 1"],
-				["Title 2", "Description 2"],
-				["Title 3", "Description 3"],
-				["Title 4", "Description 4"]
-			];
-			var searchResultsDiv = document.getElementById("searchResults");
-			if(searchResults.length > 0) {
-				var table = document.createElement("table");
-				table.innerHTML = "<tr><th>Title</th><th>Description</th></tr>";
-				for(var i = 0; i < searchResults.length; i++) {
-					var row = document.createElement("tr");
-					var titleCell = document.createElement("td");
-					titleCell.innerHTML = searchResults[i][0];
-					row.appendChild(titleCell);
-					var descriptionCell = document.createElement("td");
-					descriptionCell.innerHTML = searchResults[i][1];
-					row.appendChild(descriptionCell);
-					table.appendChild(row);
+			var results = [];
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].title.toLowerCase().includes(searchTerm.toLowerCase()) || data[i].description.toLowerCase().includes(searchTerm.toLowerCase())) {
+					results.push(data[i]);
 				}
-				searchResultsDiv.innerHTML = "";
-				searchResultsDiv.appendChild(table);
+			}
+			displayResults(results);
+		}
+
+		function displayResults(results) {
+			var tableBody = document.getElementById("resultsTable").getElementsByTagName("tbody")[0];
+			tableBody.innerHTML = "";
+			if (results.length === 0) {
+				var row = tableBody.insertRow();
+				var cell = row.insertCell();
+				cell.colSpan = 2;
+				cell.innerHTML = "No results found.";
 			} else {
-				searchResultsDiv.innerHTML = "<p>No results found.</p>";
+				for (var i = 0; i < results.length; i++) {
+					var row = tableBody.insertRow();
+					var titleCell = row.insertCell();
+					titleCell.innerHTML = results[i].title;
+					var descriptionCell = row.insertCell();
+					descriptionCell.innerHTML = results[i].description;
+				}
 			}
 		}
 	</script>
