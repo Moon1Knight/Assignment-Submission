@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Search Results</title>
+	<style>
+		table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+			padding: 10px;
+		}
+		th {
+			background-color: #ccc;
+		}
+	</style>
+</head>
+<body>
+	<h1>Search Results</h1>
+	<label for="searchTerm">Enter a search term:</label>
+	<input type="text" id="searchTerm" name="searchTerm">
+	<button onclick="search()">Search</button>
+	<div id="searchResults"></div>
+	<script>
+		function search() {
+			var searchTerm = document.getElementById("searchTerm").value;
+			// Your code to search the database goes here
+			// Replace the following dummy data with your actual search results
+			var searchResults = [
+				["Title 1", "Description 1"],
+				["Title 2", "Description 2"],
+				["Title 3", "Description 3"],
+				["Title 4", "Description 4"]
+			];
+			var searchResultsDiv = document.getElementById("searchResults");
+			if(searchResults.length > 0) {
+				var table = document.createElement("table");
+				table.innerHTML = "<tr><th>Title</th><th>Description</th></tr>";
+				for(var i = 0; i < searchResults.length; i++) {
+					var row = document.createElement("tr");
+					var titleCell = document.createElement("td");
+					titleCell.innerHTML = searchResults[i][0];
+					row.appendChild(titleCell);
+					var descriptionCell = document.createElement("td");
+					descriptionCell.innerHTML = searchResults[i][1];
+					row.appendChild(descriptionCell);
+					table.appendChild(row);
+				}
+				searchResultsDiv.innerHTML = "";
+				searchResultsDiv.appendChild(table);
+			} else {
+				searchResultsDiv.innerHTML = "<p>No results found.</p>";
+			}
+		}
+	</script>
+</body>
+</html>
